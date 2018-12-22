@@ -13,13 +13,13 @@ before_install:
   - gcloud auth activate-service-account --key-file service-account.json
   - gcloud config set project multi-k8s-226119
   - gcloud config set compute/zone europe-west3-a
-  - gcloud container cluster get-credentials multi-cluster
-  - echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_USERNAME" --password-stdin
+  - gcloud container clusters get-credentials multi-cluster
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker build -t zolingen/react-test -f ./client/Dockerfile.dev ./client
 
 script:
   - docker run zolingen/react-test npm test -- --coverage
-s
+
   deploy:
     provider: script
     script: bash ./deploy.sh
